@@ -36,15 +36,16 @@ digitalWrite(trigPin,LOW);
   Serial.println(distance);
   delay(0);
  
- int lookRight()
+ lookRight()
 {
     myservo.write(50); 
     delay(500);
     delay(100);
     myservo.write(115); 
+    delay(100);
 }
 
-int lookLeft()
+  lookLeft()
 {
     myservo.write(170); 
     delay(500);
@@ -55,6 +56,7 @@ int lookLeft()
 
   if ( distance < 20 )
   {
+    lookLeft() 
     if(distanceR>=distanceL){
       digitalWrite(leftForward , HIGH);
       digitalWrite(leftBackward , LOW);
@@ -69,7 +71,7 @@ int lookLeft()
       }
   else
         { digitalWrite(leftForward , HIGH);
-      digitalWrite(leftBackward , LOW);
+      digitalWrite(leftBackward , HIGH);
       digitalWrite(rightForward , HIGH);
       digitalWrite(rightBackward , LOW);}
       }
