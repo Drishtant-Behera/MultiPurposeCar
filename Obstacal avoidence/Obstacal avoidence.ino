@@ -40,37 +40,45 @@ digitalWrite(trigPin,LOW);
 {
     myservo.write(50); 
     delay(500);
-    int distance = readPing();
     delay(100);
     myservo.write(115); 
-    return distance;
 }
 
 int lookLeft()
 {
     myservo.write(170); 
     delay(500);
-    int distance = readPing();
     delay(100);
     myservo.write(115); 
-    return distance;
     delay(100);
 }
 
   if ( distance < 20 )
   {
-    digitalWrite(leftForward , LOW);
-    digitalWrite(leftBackward , HIGH);
-    digitalWrite(rightForward , HIGH);
-    digitalWrite(rightBackward , LOW);
-    delay(100);
-  }
+    if(distanceR>=distanceL){
+      digitalWrite(leftForward , HIGH);
+      digitalWrite(leftBackward , LOW);
+      digitalWrite(rightForward , LOW);
+      digitalWrite(rightBackward , HIGH);
+    }
+    else
+        { digitalWrite(leftForward , LOW);
+      digitalWrite(leftBackward , HIGH);
+      digitalWrite(rightForward , HIGH);
+      digitalWrite(rightBackward , LOW);}
+      }
   else
-  {
-    digitalWrite(leftForward , HIGH);
-    digitalWrite(leftBackward , LOW);
-    digitalWrite(rightForward , HIGH);
-    digitalWrite(rightBackward , LOW);
-  }
- 
+        { digitalWrite(leftForward , HIGH);
+      digitalWrite(leftBackward , LOW);
+      digitalWrite(rightForward , HIGH);
+      digitalWrite(rightBackward , LOW);}
+      }
+
+
+
+
 }
+
+
+
+
