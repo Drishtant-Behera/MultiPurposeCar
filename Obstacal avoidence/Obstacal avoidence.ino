@@ -1,3 +1,4 @@
+#include <Servo.h> 
 const int trigPin = 6;
 const int echoPin = 7;
 const int leftForward = 2;
@@ -8,15 +9,17 @@ const int rightBackward = 5;
 int duration = 0;
 int distance = 0;
 
+Servo myservo;
+
 void setup() 
 {
+  myservo.attach(10);
   pinMode(trigPin , OUTPUT);
   pinMode(echoPin , INPUT);
   pinMode(leftForward , OUTPUT);
   pinMode(leftBackward , OUTPUT);
   pinMode(rightForward , OUTPUT);
   pinMode(rightBackward , OUTPUT);
-
   Serial.begin(9600);
 
 }
