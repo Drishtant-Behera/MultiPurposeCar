@@ -9,7 +9,8 @@ const int rightBackward = 5;
 int duration = 0;
 int distance = 0;
 
-Servo myservo;
+Servo myservo; 
+int pos = 0;
 
 void setup() 
 {
@@ -38,19 +39,23 @@ digitalWrite(trigPin,LOW);
 
   if ( distance < 20 )
   {
-    myservo.write(50); 
-    delay(500);
-    int (distance = distanceL)
-    delay(100);
-    myservo.write(115); 
-    delay(100);
+    for (pos = 0; pos <= 330; pos += 1)  
+      myservo.write(pos);
+      delay(500);
+      int (distance = distanceR)
+      delay(100);
+    for (pos = 330; pos <= 0; pos -= 1) 
+      myservo.write(pos);
+      delay(100);
 
-    myservo.write(50); 
-    delay(500);
-    int (distance = distanceR)
-    delay(100);
-    myservo.write(115); 
-    delay(100);
+    for (pos = 0; pos <= 30; pos += 1) 
+      myservo.write(pos);
+      delay(500);
+      int (distance = distanceR)
+      delay(100);
+    for (pos = 30; pos <= 0; pos -= 1) 
+      myservo.write(pos);
+      delay(100);
 
     if(distanceR>=distanceL){
       digitalWrite(leftForward , HIGH);
@@ -59,11 +64,11 @@ digitalWrite(trigPin,LOW);
       digitalWrite(rightBackward , HIGH);
     }
     else
-        { digitalWrite(leftForward , LOW);
+    { digitalWrite(leftForward , LOW);
       digitalWrite(leftBackward , HIGH);
       digitalWrite(rightForward , HIGH);
       digitalWrite(rightBackward , LOW);}
-      }
+  
   else
         { digitalWrite(leftForward , HIGH);
       digitalWrite(leftBackward , HIGH);
