@@ -1,32 +1,28 @@
-#define echoPin 9
-#define trigPin 8
-#include <Servo.h>
-#include <>
-const int M1 = 10;
-const int M4 = 10;
-const int M2 = 13;
-const int M3 = 13;
-Servo myservo; 
-int pos = 0;    
+const int trigPin = 6;
+const int echoPin = 7;
+const int leftForward = 2;
+const int leftBackward = 3;
+const int rightForward = 4;
+const int rightBackward = 5;
 
-long duration; 
-long distance; 
+int duration = 0;
+int distance = 0;
 
+void setup() 
+{
+  pinMode(trigPin , OUTPUT);
+  pinMode(echoPin , INPUT);
+  pinMode(leftForward , OUTPUT);
+  pinMode(leftBackward , OUTPUT);
+  pinMode(rightForward , OUTPUT);
+  pinMode(rightBackward , OUTPUT);
 
-void setup() {
   Serial.begin(9600);
-  pinMode(echoPin,INPUT);
-  pinMode(trigPin,OUTPUT);
-  pinMode(M1,OUTPUT);
-  pinMode(M2,OUTPUT);
-  pinMode(M3,OUTPUT);
-  pinMode(M4,OUTPUT);
-  myservo.attach(4);
+
 }
 
-
-void loop() {
-  
+void loop()
+{
 digitalWrite(trigPin,LOW);
   delayMicroseconds(2);
   digitalWrite(trigPin,HIGH);
@@ -35,27 +31,22 @@ digitalWrite(trigPin,LOW);
   duration = pulseIn(echoPin,HIGH);
   distance = duration/58.2;
   Serial.println(distance);
-  delay(50);
-  digitalWrite(M1,HIGH);
-  digitalWrite(M2,HIGH);
-  digitalWrite(M3,HIGH);
-  digitalWrite(M4,HIGH);
-switch (distance <= 10){
-case 0:
-   digitalWrite(M1,LOW);
-   digitalWrite(M2,LOW);
-  digitalWrite(M3,LOW);
-  digitalWrite(M4,LOW);
-  delay(500);
-  //for (pos = 30; pos <= 270; pos += 1) { 
-  //  myservo.write(pos);
-  digitalWrite(M1,HIGH);
-  digitalWrite(M4,HIGH);
-  break;
-}
-
-
-
-
-}
+  delay(0);
  
+  if ( distance < 20 )
+  {
+    digitalWrite(leftForward , LOW);
+    digitalWrite(leftBackward , HIGH);
+    digitalWrite(rightForward , HIGH);
+    digitalWrite(rightBackward , LOW);
+    delay(100);
+  }
+  else
+  {
+    digitalWrite(leftForward , HIGH);
+    digitalWrite(leftBackward , LOW);
+    digitalWrite(rightForward , HIGH);
+    digitalWrite(rightBackward , LOW);
+  }
+ 
+}
