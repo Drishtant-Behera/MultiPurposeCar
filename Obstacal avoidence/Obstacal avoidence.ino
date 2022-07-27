@@ -42,7 +42,7 @@ digitalWrite(trigPin,LOW);
     for (pos = 0; pos <= 330; pos += 1)  
       myservo.write(pos);
       delay(500);
-      int (distance = distanceR)
+      int (distance = distanceL)
       delay(100);
     for (pos = 330; pos <= 0; pos -= 1) 
       myservo.write(pos);
@@ -68,13 +68,13 @@ digitalWrite(trigPin,LOW);
       digitalWrite(leftBackward , HIGH);
       digitalWrite(rightForward , HIGH);
       digitalWrite(rightBackward , LOW);}
-  
+  }
   else
-        { digitalWrite(leftForward , HIGH);
-      digitalWrite(leftBackward , HIGH);
+    { digitalWrite(leftForward , HIGH);
+      digitalWrite(leftBackward , LOW);
       digitalWrite(rightForward , HIGH);
       digitalWrite(rightBackward , LOW);}
-      }
+      
 
 
 
