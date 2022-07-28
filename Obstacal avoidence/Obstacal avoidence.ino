@@ -14,7 +14,7 @@ int pos = 0;
 
 void setup() 
 {
-  myservo.attach(10);
+  myservo.attach(8);
   pinMode(trigPin , OUTPUT);
   pinMode(echoPin , INPUT);
   pinMode(leftForward , OUTPUT);
