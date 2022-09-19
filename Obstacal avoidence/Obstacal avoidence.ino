@@ -38,11 +38,11 @@ digitalWrite(trigPin,LOW);
   delay(0);
 
   if ( distance < 20 )
-  {
+  { 
     for (pos = 0; pos <= 330; pos += 1)  
       myservo.write(pos);
       delay(500);
-      int (distance = distanceL)
+      int distanceL = distance;
       delay(100);
     for (pos = 330; pos <= 0; pos -= 1) 
       myservo.write(pos);
@@ -51,7 +51,7 @@ digitalWrite(trigPin,LOW);
     for (pos = 0; pos <= 30; pos += 1) 
       myservo.write(pos);
       delay(500);
-      int (distance = distanceR)
+      int distanceR = distance;
       delay(100);
     for (pos = 30; pos <= 0; pos -= 1) 
       myservo.write(pos);
