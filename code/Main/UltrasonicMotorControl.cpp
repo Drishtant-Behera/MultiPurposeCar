@@ -1,27 +1,34 @@
-#include <Servo.h>
+#include "UltrasonicMotorControl.h"
 
-const int trigPin = 6;
-const int echoPin = 7;
-const int leftForward = 2;
-const int leftBackward = 3;
-const int rightForward = 4;
-const int rightBackward = 5;
-const int servoPin = 8;
+UltrasonicMotorControl::UltrasonicMotorControl(int trig, int echo, int servo, int lf, int lb, int rf, int rb) {
+    trigPin = trig;
+    echoPin = echo;
+    servoPin = servo;
+    leftForward = lf;
+    leftBackward = lb;
+    rightForward = rf;
+    rightBackward = rb;
+    enabled = false;
 
-Servo myservo;
-
-void setup() {
-    myservo.attach(servoPin);
     pinMode(trigPin, OUTPUT);
     pinMode(echoPin, INPUT);
     pinMode(leftForward, OUTPUT);
     pinMode(leftBackward, OUTPUT);
     pinMode(rightForward, OUTPUT);
     pinMode(rightBackward, OUTPUT);
-    Serial.begin(9600);
+    myservo.attach(servoPin);
 }
 
-int getDistance() {
+void UltrasonicMotorControl::enable() {
+    enabled = true;
+}
+
+void UltrasonicMotorControl::disable() {
+    enabled = false;
+    stopMotors();
+}
+
+int UltrasonicMotorControl::getDistance() {
     digitalWrite(trigPin, LOW);
     delayMicroseconds(2);
     digitalWrite(trigPin, HIGH);
@@ -31,54 +38,49 @@ int getDistance() {
     return duration / 58.2;
 }
 
-void moveForward() {
+void UltrasonicMotorControl::moveForward() {
     digitalWrite(leftForward, HIGH);
     digitalWrite(leftBackward, LOW);
     digitalWrite(rightForward, HIGH);
     digitalWrite(rightBackward, LOW);
 }
 
-void moveLeft() {
+void UltrasonicMotorControl::moveLeft() {
     digitalWrite(leftForward, LOW);
     digitalWrite(leftBackward, HIGH);
     digitalWrite(rightForward, HIGH);
     digitalWrite(rightBackward, LOW);
 }
 
-void moveRight() {
+void UltrasonicMotorControl::moveRight() {
     digitalWrite(leftForward, HIGH);
     digitalWrite(leftBackward, LOW);
     digitalWrite(rightForward, LOW);
     digitalWrite(rightBackward, HIGH);
 }
 
-void stopMotors() {
+void UltrasonicMotorControl::stopMotors() {
     digitalWrite(leftForward, LOW);
     digitalWrite(leftBackward, LOW);
     digitalWrite(rightForward, LOW);
     digitalWrite(rightBackward, LOW);
 }
 
-void loop() {
+void UltrasonicMotorControl::update() {
+    if (!enabled) return;
     int distance = getDistance();
-    Serial.println(distance);
-    
     if (distance < 20) {
         stopMotors();
-        
         myservo.write(0);
         delay(500);
         int distanceL = getDistance();
         delay(100);
-        
         myservo.write(180);
         delay(500);
         int distanceR = getDistance();
         delay(100);
-        
         myservo.write(90);
         delay(100);
-        
         if (distanceR > distanceL) {
             moveRight();
         } else {
