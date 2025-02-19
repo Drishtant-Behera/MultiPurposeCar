@@ -1,86 +1,90 @@
-#include <Servo.h> 
+#include <Servo.h>
+
 const int trigPin = 6;
 const int echoPin = 7;
 const int leftForward = 2;
 const int leftBackward = 3;
 const int rightForward = 4;
 const int rightBackward = 5;
+const int servoPin = 8;
 
-int duration = 0;
-int distance = 0;
+Servo myservo;
 
-Servo myservo; 
-int pos = 0;
-
-void setup() 
-{
-  myservo.attach(8);
-  pinMode(trigPin , OUTPUT);
-  pinMode(echoPin , INPUT);
-  pinMode(leftForward , OUTPUT);
-  pinMode(leftBackward , OUTPUT);
-  pinMode(rightForward , OUTPUT);
-  pinMode(rightBackward , OUTPUT);
-  Serial.begin(9600);
-
+void setup() {
+    myservo.attach(servoPin);
+    pinMode(trigPin, OUTPUT);
+    pinMode(echoPin, INPUT);
+    pinMode(leftForward, OUTPUT);
+    pinMode(leftBackward, OUTPUT);
+    pinMode(rightForward, OUTPUT);
+    pinMode(rightBackward, OUTPUT);
+    Serial.begin(9600);
 }
 
-void loop()
-{
-digitalWrite(trigPin,LOW);
-  delayMicroseconds(2);
-  digitalWrite(trigPin,HIGH);
-  delayMicroseconds(10);
-  digitalWrite(trigPin,LOW);
-  duration = pulseIn(echoPin,HIGH);
-  distance = duration/58.2;
-  Serial.println(distance);
-  delay(0);
+int getDistance() {
+    digitalWrite(trigPin, LOW);
+    delayMicroseconds(2);
+    digitalWrite(trigPin, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(trigPin, LOW);
+    int duration = pulseIn(echoPin, HIGH);
+    return duration / 58.2;
+}
 
-  if ( distance < 20 )
-  { 
-    for (pos = 0; pos <= 330; pos += 1)  
-      myservo.write(pos);
-      delay(500);
-      int distanceL = distance;
-      delay(100);
-    for (pos = 330; pos <= 0; pos -= 1) 
-      myservo.write(pos);
-      delay(100);
+void moveForward() {
+    digitalWrite(leftForward, HIGH);
+    digitalWrite(leftBackward, LOW);
+    digitalWrite(rightForward, HIGH);
+    digitalWrite(rightBackward, LOW);
+}
 
-    for (pos = 0; pos <= 30; pos += 1) 
-      myservo.write(pos);
-      delay(500);
-      int distanceR = distance;
-      delay(100);
-    for (pos = 30; pos <= 0; pos -= 1) 
-      myservo.write(pos);
-      delay(100);
+void moveLeft() {
+    digitalWrite(leftForward, LOW);
+    digitalWrite(leftBackward, HIGH);
+    digitalWrite(rightForward, HIGH);
+    digitalWrite(rightBackward, LOW);
+}
 
-    if(distanceR>=distanceL){
-      digitalWrite(leftForward , HIGH);
-      digitalWrite(leftBackward , LOW);
-      digitalWrite(rightForward , LOW);
-      digitalWrite(rightBackward , HIGH);
+void moveRight() {
+    digitalWrite(leftForward, HIGH);
+    digitalWrite(leftBackward, LOW);
+    digitalWrite(rightForward, LOW);
+    digitalWrite(rightBackward, HIGH);
+}
+
+void stopMotors() {
+    digitalWrite(leftForward, LOW);
+    digitalWrite(leftBackward, LOW);
+    digitalWrite(rightForward, LOW);
+    digitalWrite(rightBackward, LOW);
+}
+
+void loop() {
+    int distance = getDistance();
+    Serial.println(distance);
+    
+    if (distance < 20) {
+        stopMotors();
+        
+        myservo.write(0);
+        delay(500);
+        int distanceL = getDistance();
+        delay(100);
+        
+        myservo.write(180);
+        delay(500);
+        int distanceR = getDistance();
+        delay(100);
+        
+        myservo.write(90);
+        delay(100);
+        
+        if (distanceR > distanceL) {
+            moveRight();
+        } else {
+            moveLeft();
+        }
+    } else {
+        moveForward();
     }
-    else
-    { digitalWrite(leftForward , LOW);
-      digitalWrite(leftBackward , HIGH);
-      digitalWrite(rightForward , HIGH);
-      digitalWrite(rightBackward , LOW);}
-  }
-  else
-    { digitalWrite(leftForward , HIGH);
-      digitalWrite(leftBackward , LOW);
-      digitalWrite(rightForward , HIGH);
-      digitalWrite(rightBackward , LOW);}
-      
-
-
-
-
 }
-
-
-
-
